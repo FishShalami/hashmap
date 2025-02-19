@@ -84,7 +84,16 @@ class HashMap {
     return this.buckets[index].key === key;
   }
 
-  remove(key) {}
+  remove(key) {
+    const index = this.hash(key);
+
+    if (this.buckets[index] !== null && this.buckets[index].key === key) {
+      this.buckets[index] = null;
+      this.size--;
+      return true;
+    }
+    return false;
+  }
 
   length() {}
 
