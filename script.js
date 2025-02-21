@@ -1,7 +1,3 @@
-if (index < 0 || index >= buckets.length) {
-  throw new Error("Trying to access index out of bounds");
-}
-
 class HashMap {
   constructor() {
     this.capacity = 16;
@@ -12,13 +8,12 @@ class HashMap {
 
   hash(key) {
     let hashCode = 0;
-
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
-      hashCode = primeNumber * hashCode + (key.charCodeAt(i) % this.capacity);
+      // Incorporate the character code, then immediately take modulo capacity
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
     }
-
-    return hashCode;
+    return hashCode; // Now guaranteed to be within 0...capacity-1
   }
 
   set(key, value) {
@@ -95,15 +90,46 @@ class HashMap {
     return false;
   }
 
-  length() {}
+  length() {
+    return this.size;
+  }
 
-  clear() {}
+  clear() {
+    this.buckets = new Array(this.capacity).fill(null);
+    this.size = 0;
+  }
 
-  keys() {}
+  keys() {
+    let keyArray = [];
 
-  values() {}
+    for (let bucket of this.buckets) {
+      if (bucket !== null) {
+        keyArray.push(bucket.key);
+      }
+    }
+    return keyArray;
+  }
 
-  entries() {}
+  values() {
+    let valueArray = [];
+
+    for (let bucket of this.buckets) {
+      if (bucket !== null) {
+        valueArray.push(bucket.value);
+      }
+    }
+    return valueArray;
+  }
+
+  entries() {
+    let entryArray = [];
+
+    for (let bucket of this.buckets) {
+      if (bucket !== null) {
+        const entry = [bucket.key, bucket.value];
+        entryArray.push(entry);
+      }
+    }
+    return entryArray;
+  }
 }
-
-function set(key, value) {}
